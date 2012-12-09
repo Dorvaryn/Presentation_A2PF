@@ -12,6 +12,11 @@ right (MkStk ls rs) = rs
 left :: Stack w -> [w]
 left (MkStk ls rs) = ls
 
+swap :: Stack w -> Stack w
+swap (MkStk [] []) = MkStk [] []
+swap (MkStk [] (r1 : r2 : rs)) = MkStk [] (r2 : r1 :rs)
+swap (MkStk [l] (r : rs)) = MkStk [r] (l :rs)
+swap (MkStk ls rs) = MkStk ((init . init $ ls) ++ [last ls] ++ [last . init $ ls]) rs
 
 focusPrev :: Stack w -> Stack w
 focusPrev (MkStk [] []) = MkStk [] [] 
@@ -26,10 +31,10 @@ focusNext (MkStk ls (r:rs)) = MkStk (r:ls) rs
 -- Write properties in Haskell
 type TS = Stack Int -- Test at this type
 
---prop_focusNP :: TS -> Bool
---prop_focusNP s = focusNext (focusPrev s) == s
---    where types = s::Stack Int
+prop_focusNP :: TS -> Bool
+prop_focusNP s = focusNext (focusPrev s) == s
+    where types = s::Stack Int
 
---prop_swap :: TS -> Bool
---prop_swap s = swap (swap s) == s
---    where types = s::Stack Int
+prop_swap :: TS -> Bool
+prop_swap s = swap (swap s) == s
+    where types = s::Stack Int
