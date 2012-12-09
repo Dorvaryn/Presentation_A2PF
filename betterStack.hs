@@ -11,7 +11,7 @@ instance (Eq w) => Eq (Stack w) where
     MkStk l1 r1 == MkStk l2 r2 = (l1 == l2) && (r1 == r2)
 
 instance (Show w) => Show (Stack w) where
-  show (MkStk l r) = "List : " ++ show (enumerate (MkStk l r)) ++ "\nInner Rep : "++show l ++ "-" ++ show r
+    show (MkStk l r) = "List : " ++ show (enumerate (MkStk l r)) ++ "\nInner Rep : "++show l ++ "-" ++ show r
 
 insert :: Stack w -> w -> Stack w
 insert (MkStk ls rs) w = MkStk (ls ++ [w]) rs
@@ -54,7 +54,7 @@ focusNext (MkStk ls (r:rs)) = MkStk (r:ls) rs
 type TS = Stack Int -- Test at this type
 
 instance (Arbitrary a) => Arbitrary (Stack a) where
---    arbitrary = liftM2 MkStk arbitrary arbitrary
+      --arbitrary = liftM2 MkStk arbitrary arbitrary
       arbitrary = do
         l <- arbitrary
         r <- arbitrary
