@@ -12,6 +12,12 @@ right (MkStk ls rs) = rs
 left :: Stack w -> [w]
 left (MkStk ls rs) = ls
 
+focus :: Stack w -> Maybe w
+-- Returns the focused window of the stack
+-- or Nothing if the stack is empty
+focus (MkStk _ []) = Nothing
+focus (MkStk _ (w:_)) = Just w
+
 swap :: Stack w -> Stack w
 swap (MkStk [] []) = MkStk [] []
 swap (MkStk [] (r1 : r2 : rs)) = MkStk [] (r2 : r1 :rs)
@@ -29,12 +35,12 @@ focusNext (MkStk ls [r]) = MkStk [] ((reverse ls) ++ [r])
 focusNext (MkStk ls (r:rs)) = MkStk (r:ls) rs
 
 -- Write properties in Haskell
-type TS = Stack Int -- Test at this type
+--type TS = Stack Int -- Test at this type
 
-prop_focusNP :: TS -> Bool
-prop_focusNP s = focusNext (focusPrev s) == s
-    where types = s::Stack Int
+--prop_focusNP :: TS -> Bool
+--prop_focusNP s = focusNext (focusPrev s) == s
+--    where types = s::Stack Int
 
-prop_swap :: TS -> Bool
-prop_swap s = swap (swap s) == s
-    where types = s::Stack Int
+--prop_swap :: TS -> Bool
+--prop_swap s = swap (swap s) == s
+--    where types = s::Stack Int
