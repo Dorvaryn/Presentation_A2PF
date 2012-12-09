@@ -12,10 +12,16 @@ right (MkStk ls rs) = rs
 left :: Stack w -> [w]
 left (MkStk ls rs) = ls
 
+
 focusPrev :: Stack w -> Stack w
 focusPrev (MkStk [] []) = MkStk [] [] 
 focusPrev (MkStk [] rs) = MkStk (reverse . init $ rs) [last rs]
 focusPrev (MkStk (l:ls) rs) = MkStk ls (l:rs)
+
+focusNext :: Stack w -> Stack w
+focusNext (MkStk [] []) = MkStk [] [] 
+focusNext (MkStk ls [r]) = MkStk [] ((reverse ls) ++ [r])
+focusNext (MkStk ls (r:rs)) = MkStk (r:ls) rs
 
 -- Write properties in Haskell
 type TS = Stack Int -- Test at this type
