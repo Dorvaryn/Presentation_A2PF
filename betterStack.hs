@@ -1,4 +1,7 @@
-module Stack (Stack(MkStk), enumerate, right, left, focusPrev) where
+module Stack (
+    Stack(MkStk), 
+    insert, enumerate, isNull, focus, swap, focusPrev, focusNext
+) where
 
 import Test.QuickCheck
 import System.Random
