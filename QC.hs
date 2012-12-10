@@ -19,7 +19,7 @@ process file = do { cts <- readFile file
                     else do
 
                     { writeFile "script" $
-                        unlines ([":l " ++ file] ++ [":m +Test.QuickCheck"] ++ ["putStr \"Checking : " ++ file ++ "\\n\""] ++ concatMap makeTest tests)
+                        unlines ([":l " ++ file] ++ [":m +Test.QuickCheck"] ++ ["putStr \"Checking : " ++ file ++ "\\n\""] ++ concatMap makeTest tests ++ ["putStr \"\\n\""])
                     ; system ("ghci -v0 < script")
                     ; system ("rm script")
                     ; return () }}
