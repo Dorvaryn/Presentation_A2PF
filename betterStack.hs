@@ -1,3 +1,5 @@
+module Stack (Stack(MkStk), enumerate, right, left, focusPrev) where
+
 import Test.QuickCheck
 import System.Random
 --import Control.Monad
