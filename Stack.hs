@@ -5,6 +5,7 @@ module Stack (
 
 import Test.QuickCheck
 import System.Random
+import Control.Monad.Writer
 --import Control.Monad
 
 data Stack w = MkStk [w] [w] -- left and right resp
@@ -21,6 +22,10 @@ instance (Show w) => Show (Stack w) where
 insert :: Stack w -> w -> Stack w
 -- Insert new windows at the end of the layout
 insert (MkStk ls rs) w = MkStk ls (rs ++ [w])
+
+insert' :: (Stack Char) -> Char -> Writer [String] (Stack Char)
+-- Insert version with debug string, only on stacks of chars
+insert' (MkStk ls rs) w = do { tell ["Just inserted " ++ [w]]; return $ MkStk ls (rs ++ [w]) }
 
 enumerate :: Stack w -> [w]
 -- Enumerate the windows in layout order
