@@ -19,7 +19,10 @@ process file = do { cts <- readFile file
                     else do
 
                     { writeFile "script" $
-                        unlines ([":l " ++ file] ++ [":m +Test.QuickCheck"] ++ ["putStr \"Checking : " ++ file ++ "\\n\""] ++ concatMap makeTest tests ++ ["putStr \"\\n\""])
+                        unlines ([":l " ++ file] ++ [":m +Test.QuickCheck"] ++
+                        ["let customCheck p = quickCheckWith (stdArgs{ maxSuccess = 1000 }) p"] ++
+                        ["putStr \"Checking : " ++ file ++ "\\n\""] ++ 
+                        concatMap makeTest tests ++ ["putStr \"\\n\""])
                     ; system ("ghci -v0 < script")
                     ; system ("rm script")
                     ; return () }}
@@ -31,4 +34,4 @@ getTests cts = nub $ filter ("prop_" `isPrefixOf`) $
 
 makeTest :: String -> [String]
 -- Write the command to execute quickCheck for the given property
-makeTest test = ["putStr \"" ++ test ++ ": \"", "quickCheck " ++ test]
+makeTest test = ["putStr \"" ++ test ++ ": \"", "customCheck " ++ test]
