@@ -3,6 +3,9 @@ data Stack w = MkStk [w] [w] -- left and right resp
 -- Left list is *reversed*
 -- INVARIANT: if „right‟ is empty, so is „left‟
 
+instance (Show w) => Show (Stack w) where
+    show (MkStk l r) = "List : " ++ show (enumerate (MkStk l r)) ++ "\nInner Rep : "++show l ++ "-" ++ show r
+
 insert :: Stack w -> w -> Stack w
 -- Insert new windows at the end of the layout
 insert (MkStk ls rs) w = MkStk ls (rs ++ [w])
@@ -21,6 +24,12 @@ left :: Stack w -> [w]
 -- return the left arm of the Stack
 left (MkStk ls rs) = ls
 
+focus :: Stack w -> Maybe w
+-- Returns the focused window of the stack
+-- or Nothing if the stack is empty
+focus (MkStk _ []) = Nothing
+focus (MkStk _ (w:_)) = Just w
+
 isNull :: Stack w -> Bool
 -- Return True if the stack is empty (right arm empty)
 -- return False otherwise
@@ -29,7 +38,6 @@ isNull s = False
 
 swap :: Stack w -> Stack w
 -- Swap topmost pair
-swap (MkStk [] []) = MkStk [] []
 swap (MkStk ls []) = MkStk [] []
 swap (MkStk [] [r]) = MkStk [] [r]
 swap (MkStk [] (r1 : r2 : rs)) = MkStk [] (r2 : r1 :rs)

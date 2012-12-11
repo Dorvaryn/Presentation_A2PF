@@ -5,8 +5,8 @@ module Stack (
 
 import Test.QuickCheck
 import System.Random
+import Control.Monad
 import Control.Monad.Writer
---import Control.Monad
 
 data Stack w = MkStk [w] [w] -- left and right resp
 -- Focus is head of „right‟ list
@@ -14,7 +14,7 @@ data Stack w = MkStk [w] [w] -- left and right resp
 -- INVARIANT: if „right‟ is empty, so is „left‟
 
 instance (Eq w) => Eq (Stack w) where
-    MkStk l1 r1 == MkStk l2 r2 = (l1 == l2) && (r1 == r2)
+    (==) (MkStk l1 r1) (MkStk l2 r2) = (l1 == l2) && (r1 == r2)
 
 instance (Show w) => Show (Stack w) where
     show (MkStk l r) = "List : " ++ show (enumerate (MkStk l r)) ++ "\nInner Rep : "++show l ++ "-" ++ show r
@@ -55,7 +55,6 @@ focus (MkStk _ (w:_)) = Just w
 
 swap :: Stack w -> Stack w
 -- Swap topmost pair
-swap (MkStk [] []) = MkStk [] []
 swap (MkStk ls []) = MkStk [] []
 swap (MkStk [] [r]) = MkStk [] [r]
 swap (MkStk [] (r1 : r2 : rs)) = MkStk [] (r2 : r1 :rs)
@@ -64,7 +63,6 @@ swap (MkStk ls rs) = MkStk ((init . init $ ls) ++ [last ls] ++ [last . init $ ls
 
 focusPrev :: Stack w -> Stack w
 -- Switch the focus to the previous windows
-focusPrev (MkStk [] []) = MkStk [] []
 focusPrev (MkStk ls []) = MkStk [] []
 focusPrev (MkStk [] rs) = MkStk (reverse . init $ rs) [last rs]
 focusPrev (MkStk (l:ls) rs) = MkStk ls (l:rs)
@@ -79,11 +77,7 @@ focusNext (MkStk ls (r:rs)) = MkStk (r:ls) rs
 type TS = Stack Int -- Test at this type
 
 instance (Arbitrary a) => Arbitrary (Stack a) where
-      --arbitrary = liftM2 MkStk arbitrary arbitrary
-      arbitrary = do
-        l <- arbitrary
-        r <- arbitrary
-        return(MkStk l r)
+      arbitrary = liftM2 MkStk arbitrary arbitrary
 
 prop_focusNP :: TS -> Bool
 -- Execute a focus switch forward then backward and check if still equals to the initial stack
