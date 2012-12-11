@@ -1,6 +1,6 @@
 import Test.QuickCheck
 import System.Random
-import Control.Monad
+--import Control.Monad
 
 data Stack w = MkStk [w] [w] -- left and right resp
 -- Focus is head of „right‟ list
@@ -14,7 +14,7 @@ instance (Show w) => Show (Stack w) where
     show (MkStk l r) = "List : " ++ show (enumerate (MkStk l r)) ++ "\nInner Rep : "++show l ++ "-" ++ show r
 
 insert :: Stack w -> w -> Stack w
-insert (MkStk ls rs) w = MkStk (ls ++ [w]) rs
+insert (MkStk ls rs) w = MkStk ls (rs ++ [w])
 
 enumerate :: Stack w -> [w]
 enumerate (MkStk ls rs) = reverse ls ++ rs

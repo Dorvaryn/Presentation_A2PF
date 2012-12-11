@@ -4,7 +4,7 @@ type Stack w = [w]
 
 insert :: Stack w -> w -> Stack w
 -- Newly inserted window has focus
-insert s w = w : s
+insert s w = s ++ [w]
 
 swap :: Stack w -> Stack w
 -- Swap topmost pair
