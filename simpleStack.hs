@@ -37,12 +37,10 @@ type TS = Stack Int -- Test at this type
 prop_focusNP :: TS -> Bool
 -- Execute a focus switch forward then backward and check if still equals to the initial stack
 prop_focusNP s = focusNext (focusPrev s) == s
---    where types = s::Stack Int
 
 prop_swap :: TS -> Bool
 -- Execute two swap and check if still equals to the initial stack
 prop_swap s = swap (swap s) == s
---    where types = s::Stack Int
 
 prop_focusNfocus :: TS -> Bool
 -- Execute a focus switch forward and check if focused element is the expected one
